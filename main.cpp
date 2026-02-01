@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <limits>
 #include <fstream>
-#include <sstream>
 
 using namespace std;
 
@@ -28,7 +27,7 @@ public:
         sheetName = name;
         columns.clear();
         dataRows.clear();
-        cout << "Database \"" << sheetName << "\" created and linked.\n\n";
+        cout << "Attendance sheet \"" << sheetName << "\" created successfully!\n\n";
     }
 
     void addColumn(const string &name, int type)
@@ -36,44 +35,15 @@ public:
         columns.push_back({name, type});
     }
 
-    void addRow(const vector<string>& row){
-        dataRows.push_back(row);
-    }
-
-    void saveToFile() {
-        string fileName = sheetName + ".csv";
-        ofstream outFile(fileName);
-
-        if (outFile.is_open()){
-            for (size_t i = 0; i < columns.size(); ++i) {
-                outFile << columns[i].name << (i == columns.size() - 1 ? "" : ",");
-            }
-            outFile << "\n";
-
-            // Write attendance rows
-            for (const auto &row : dataRows){
-                for (size_t j = 0; j < row.size(); ++j) {
-                    outFile << row[j] << (j == row.size() - 1 ? "": ",");
-                }
-                outFile << "\n";
-            }
-            outFile.close();
-            cout << "Writing updated sheet to output... Saved as " << fileName << "\n";
-        } else {
-            cout << "Error: Could not save to file.\n";
-        }
-    }
-    vector<column> &getColumns()
+    vector<column>& getColumns()
     {
         return columns;
     }
 
-    vector<vector<string>> &getData()
+    string getSheetName()
     {
-        return dataRows;
+         return sheetName;
     }
-
-    string getSheetName() { return sheetName; }
 };
 
 // validation function
@@ -118,25 +88,17 @@ string getString(string prompt)
 // main program
 int main()
 {
+    // Milestone 1
     cout << "***************" << endl;
-    cout << "STUDENT ATTENDANCE TRACKER - MILESTONE 2\n";
+    cout << "STUDENT ATTENDANCE TRACKER - MILESTONE 1\n";
     cout << "***************" << endl;
 
-    string termName;
-    cout << "Enter term name: ";
-    getline(cin, termName);
+    string sheetName;
+    cout << "Enter attendance sheet name: ";
+    getline(cin, sheetName);
 
     sheet mySheet;
-    mySheet.createSheet(termName);
-
-    string fileName;
-    cout << "Enter attendance file name (e.g., week1.attendance): ";
-    cin >> fileName;
-
-    ifstream checkFile(fileName);
-    if (!checkFile) {
-        cout << "File does not exist. Initializing new structure for Milestone 1... \n";
-    }
+    mySheet.createSheet(sheetName);
 
     int n;
     while (true)
@@ -267,11 +229,42 @@ int main()
         cout << endl;
     }
 
-    // Save data to file
-    mySheet.saveToFile();
+    cout << "\n------------------------------------------------------\n";
+    cout << "End of Sheet.\n";
 
-    //cout << "\n------------------------------------------------------\n";
-    cout << "\nProgram ended successfully.\n";
+    // Milestone 2
+    string saveFileName;
+    cout << "\nEnter attendance file name to create (e.g., week1.attendance): ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, saveFileName);
+
+    ofstream outFile(saveFileName + ".csv");
+
+    if (outFile.is_open())
+    {
+        for (size_t i = 0; i < finalCols.size(); i++)
+        {
+            outFile << finalCols[i].name << (i == finalCols.size() - 1 ? "" : ",");
+        }
+        outFile << "\n";
+
+        for (const auto& row : database)
+        {
+            for (size_t k = 0; k < row.size(); k++)
+            {
+                outFile << row[k] << (k == row.size() -1 ? "" : ",");
+            }
+            outFile << "\n";
+        }
+        outFile.close();
+        cout << "Successfully updated attendance data to file: " << saveFileName << ".csv" << endl;
+    }
+    else
+    {
+        cout << "Error: Could not create the file. Please check permissions.\n";
+    }
+
+    cout << "\nProgram End." << endl;
 
     return 0;
 }

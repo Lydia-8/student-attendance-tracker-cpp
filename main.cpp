@@ -1,3 +1,22 @@
+// *********************************************************
+// Program: TC1L_GROUP10_MILESTONE2.cpp
+// Course: CCP6114 Programming Fundamentals
+// Lecture Class: TC1L
+// Tutorial Class: TT2L and TT4L
+// Trimester: 2530
+// Member_1: ID | AISYAH BINTI AHMAD NIZAM | AISYAH.AHAMAD.NIZAM1@student.mmu.edu.my | 011-11212-126
+// Member_2: ID | NUR NAJWA NABILAH BINTI MOHD AZRIN | EMAIL | 016-6867-890
+// Member_3: ID | HANUSA A/P SUBRAMANIAM | HANUSA.SUBRAMANIAM1@student.mmu.edu.my | 018-6217-622
+// Member_4: ID | LYDIA BINTI MOHD JEFFRY LEE | EMAIL | 018-2705-857
+// *********************************************************
+// Task Distribution
+// Member_1:
+// Member_2:
+// Member_3:
+// Member_4:
+//
+
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -232,39 +251,303 @@ int main()
     cout << "\n------------------------------------------------------\n";
     cout << "End of Sheet.\n";
 
-    // Milestone 2
+
+    // MMILESTONE 2
+
+    cout << "\n===========================================\n";
+    cout << "   STUDENT ATTENDANCE TRACKER - MILESTONE 2\n";
+    cout << "===========================================\n";
+
+    string term_name;
+    cout << "Enter term name: ";
+    cin.ignore();
+    getline(cin, term_name);
+
+    cout << "Database \"" << term_name << "\" created and loaded.\n";
+
     string saveFileName;
-    cout << "\nEnter attendance file name to create (e.g., week1.attendance): ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, saveFileName);
 
-    ofstream outFile(saveFileName + ".csv");
-
-    if (outFile.is_open())
+        while (true)
     {
-        for (size_t i = 0; i < finalCols.size(); i++)
+        cout << "\nEnter attendance file to load: ";
+        getline(cin, saveFileName);
+
+        // sheetname from Milestoen 1
+        if (saveFileName == sheetName)
         {
-            outFile << finalCols[i].name << (i == finalCols.size() - 1 ? "" : ",");
+            break;
+        }
+        else
+        {
+            cout << "Error: Attendance file does not exist, Please check again\n";
+        }
+    }
+
+        cout << "\nReading attendance data from file...\n";
+        cout << "Successfully loaded: " << saveFileName << "_Attendance.csv\n\n";
+
+        cout << "-------------------------------------------\n";
+        cout << "Current Attendance Sheet\n";
+        cout << "-------------------------------------------\n";
+
+   vector<column>& finalCols2 = mySheet.getColumns();
+
+    // Print Header
+    for (int i = 0; i < finalCols2.size(); i++) {
+        cout << finalCols2[i].name;
+        if (i < finalCols2.size() - 1) cout << ", ";
+    }
+    cout << endl;
+
+    // Print Rows
+    for (const auto& row : database) {
+        for (int i = 0; i < row.size(); i++){
+            cout << row[i];
+            if (i < row.size() - 1) cout << ", ";
+        }
+        cout << endl;
+    }
+
+    //Update row part
+
+    cout << "\n-------------------------------------------\n";
+    cout << "UPDATE ATTENDANCE ROW\n";
+    cout << "-------------------------------------------\n";
+
+    char updateChoice;
+    cout << "Do you want to update a row? (y/n): ";
+    cin >> updateChoice;
+
+    if (updateChoice == 'y' || updateChoice == 'Y')
+    {
+        string searchID;
+        bool found = false;
+
+        int idColIndex = 0;
+        int statusColIndex = finalCols2.size() - 1;
+
+        while (true)
+        {
+            found = false;
+
+            while(true) {
+                cout << "\nEnter StudentID to update (INT only): ";
+                cin >> searchID;
+
+                bool isNum = true;
+                for(char c : searchID) {
+                    if(!isdigit(c)) { isNum = false; break; }
+                }
+
+                if(!isNum) {
+                    cout << "Error: invalid integer. Try again\n";
+                } else {
+                    break;
+                }
+            }
+
+            for (auto& row : database) {
+                if (row[idColIndex] == searchID) {
+                    found = true;
+
+                    string newStatus;
+
+                    // Status Validation
+                    while(true) {
+                        cout << "Enter new status: ";
+                        cin >> newStatus;
+
+                        if(newStatus == "1" || newStatus == "0") {
+                            break;
+                        } else {
+                             cout << "Invalid status. Please enter 1 or 0\n";
+                        }
+                    }
+
+                    //Update Memory
+                    row[statusColIndex] = newStatus;
+
+                    //Update File
+                    ofstream updateFile(saveFileName + "_Attendance.csv");
+                    if (updateFile.is_open()) {
+                        for (int i = 0; i < finalCols2.size(); i++) {
+                            updateFile << finalCols2[i].name << (i == finalCols2.size() - 1 ? "" : ",");
+                        }
+                        updateFile << "\n";
+                        for (const auto& r : database) {
+                            for (int k = 0; k < r.size(); k++) {
+                                updateFile << r[k] << (k == r.size() - 1 ? "" : ",");
+                            }
+                            updateFile << "\n";
+                        }
+                        updateFile.close();
+                    }
+
+                    cout << "Row updated successfully.\n";
+                    break;
+                }
+            }
+
+            //Display updated sheet
+
+            if (found) {
+                cout << "\nUpdated Sheet:\n";
+
+                //Print Header
+                for (int i = 0; i < finalCols2.size(); i++) {
+                    cout << finalCols2[i].name;
+                    if (i < finalCols2.size() - 1) cout << ", ";
+                }
+                cout << endl;
+
+                //Print Rows
+                for (const auto& row : database) {
+                    for (int i = 0; i < row.size(); i++){
+                        cout << row[i];
+                        if (i < row.size() - 1) cout << ", ";
+                    }
+                    cout << endl;
+                }
+
+                break;
+            }
+            else {
+
+                cout << "Error: StudentID does not exist. Please try again.\n";
+            }
+
+        }
+
+    }
+
+    // Delete row part
+
+    cout << "\n-------------------------------------------\n";
+    cout << "DELETE ATTENDANCE ROW\n";
+    cout << "-------------------------------------------\n";
+
+    char deleteChoice;
+    cout << "Do you want to delete any row? (y/n): ";
+    cin >> deleteChoice;
+
+    if (deleteChoice == 'y' || deleteChoice == 'Y')
+    {
+        string deleteID;
+        bool found = false;
+        int idColIndex = 0;
+
+        while (true)
+        {
+            found = false;
+
+            while(true) {
+                cout << "\nEnter StudentID to delete (INT only): ";
+                cin >> deleteID;
+
+                bool isNum = true;
+                for(char c : deleteID) {
+                    if(!isdigit(c)) { isNum = false; break; }
+                }
+
+                if(!isNum) {
+                    cout << "Error: invalid integer. Try again\n";
+                } else {
+                    break;
+                }
+            }
+
+            for (int i = 0; i < database.size(); i++)
+            {
+                if (database[i][idColIndex] == deleteID)
+                {
+                    database.erase(database.begin() + i);
+                    found = true;
+
+                    ofstream deleteFile(saveFileName + "_Attendance.csv");
+                    if (deleteFile.is_open()) {
+                        for (int j = 0; j < finalCols2.size(); j++) {
+                            deleteFile << finalCols2[j].name << (j == finalCols2.size() - 1 ? "" : ",");
+                        }
+                        deleteFile << "\n";
+                        for (const auto& r : database) {
+                            for (int k = 0; k < r.size(); k++) {
+                                deleteFile << r[k] << (k == r.size() - 1 ? "" : ",");
+                            }
+                            deleteFile << "\n";
+                        }
+                        deleteFile.close();
+                    }
+
+                    cout << "Row deleted successfully.\n";
+                    break;
+                }
+            }
+
+            if (found) {
+                cout << "\nUpdated Sheet:\n";
+                for (int i = 0; i < finalCols2.size(); i++) {
+                    cout << finalCols2[i].name;
+                    if (i < finalCols2.size() - 1) cout << ", ";
+                }
+                cout << endl;
+                for (const auto& row : database) {
+                    for (int i = 0; i < row.size(); i++) {
+                        cout << row[i];
+                        if (i < row.size() - 1) cout << ", ";
+                    }
+                    cout << endl;
+                }
+                break;
+            }
+            else {
+                cout << "Error: StudentID does not exist. Please try again.\n";
+            }
+        }
+    }
+
+    // COUNT ROWS
+
+    char countChoice;
+    cout << "\nDo you want to count the total attendance rows? (y/n): ";
+    cin >> countChoice;
+
+    if (countChoice == 'y' || countChoice == 'Y') {
+        cout << "-------------------------------------------" << endl;
+        cout << "Count Rows" << endl;
+        cout << "-------------------------------------------" << endl;
+        cout << "Number of rows: " << database.size() << endl; // Uses the current size of the vector
+    }
+
+    // WRITING UPDATED SHEET TO FILE
+
+    cout << "\n-------------------------------------------\n";
+    cout << "Writing updated sheet to output file...\n";
+
+    ofstream outFile(saveFileName + "_Updated.csv");
+    if (outFile.is_open()) {
+
+        
+        for (size_t i = 0; i < finalCols2.size(); i++) {
+            outFile << finalCols2[i].name << (i == finalCols2.size() - 1 ? "" : ",");
         }
         outFile << "\n";
 
-        for (const auto& row : database)
-        {
-            for (size_t k = 0; k < row.size(); k++)
-            {
-                outFile << row[k] << (k == row.size() -1 ? "" : ",");
+
+        for (const auto& row : database) {
+            for (size_t k = 0; k < row.size(); k++) {
+                outFile << row[k] << (k == row.size() - 1 ? "" : ",");
             }
             outFile << "\n";
         }
         outFile.close();
-        cout << "Successfully updated attendance data to file: " << saveFileName << ".csv" << endl;
-    }
-    else
-    {
-        cout << "Error: Could not create the file. Please check permissions.\n";
+        cout << "Output saved as: " << saveFileName << "_Updated.csv" << endl;
+    } else {
+        cout << "Error: Could not save the updated file." << endl;
     }
 
-    cout << "\nProgram End." << endl;
+    cout << "-------------------------------------------\n";
+    cout << "End of Milestone 2 Output\n";
+    cout << "Program End." << endl;
 
     return 0;
 }

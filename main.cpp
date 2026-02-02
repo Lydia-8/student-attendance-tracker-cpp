@@ -252,7 +252,7 @@ int main()
     cout << "End of Sheet.\n";
 
 
-    // MMILESTONE 2
+    // MILESTONE 2
 
     cout << "\n===========================================\n";
     cout << "   STUDENT ATTENDANCE TRACKER - MILESTONE 2\n";
@@ -272,7 +272,7 @@ int main()
         cout << "\nEnter attendance file to load: ";
         getline(cin, saveFileName);
 
-        // sheetname from Milestoen 1
+        // sheetname from Milestone 1
         if (saveFileName == sheetName)
         {
             break;
@@ -505,7 +505,7 @@ int main()
         }
     }
 
-    // COUNT ROWS
+    // Count rows
 
     char countChoice;
     cout << "\nDo you want to count the total attendance rows? (y/n): ";
@@ -518,15 +518,14 @@ int main()
         cout << "Number of rows: " << database.size() << endl; // Uses the current size of the vector
     }
 
-    // WRITING UPDATED SHEET TO FILE
-
+    // Writing updated sheet
     cout << "\n-------------------------------------------\n";
     cout << "Writing updated sheet to output file...\n";
 
     ofstream outFile(saveFileName + "_Updated.csv");
     if (outFile.is_open()) {
 
-        
+
         for (size_t i = 0; i < finalCols2.size(); i++) {
             outFile << finalCols2[i].name << (i == finalCols2.size() - 1 ? "" : ",");
         }

@@ -5,14 +5,14 @@
 // Tutorial Class: TT2L and TT4L
 // Trimester: 2530
 // Member_1: ID | AISYAH BINTI AHMAD NIZAM | AISYAH.AHAMAD.NIZAM1@student.mmu.edu.my | 011-11212-126
-// Member_2: ID | NUR NAJWA NABILAH BINTI MOHD AZRIN | EMAIL | 016-6867-890
+// Member_2: ID | NUR NAJWA NABILAH BINTI MOHD AZRIN | NUR.NAJWA.NABILAH@student.mmu.edu.my | 016-6867-890
 // Member_3: ID | HANUSA A/P SUBRAMANIAM | HANUSA.SUBRAMANIAM1@student.mmu.edu.my | 018-6217-622
-// Member_4: ID | LYDIA BINTI MOHD JEFFRY LEE | EMAIL | 018-2705-857
+// Member_4: ID | LYDIA BINTI MOHD JEFFRY LEE | LYDIA.MOHD.JEFFRY1@student.mmu.edu.my | 018-2705-857
 // *********************************************************
 // Task Distribution
-// Member_1:
+// Member_1: Cordinated the project workflow, help on designing and completed the flowchart ,implemented the attendance update module, which includes student ID search, input validation, and automatic file saving
 // Member_2:
-// Member_3:
+// Member_3: Implemented the Delete Attendance Row function with user confirmation, ensured records are removed correctly based on StudentID and the updated sheet is displayed, Added logic to allow skipping the delete process when selected by the user.
 // Member_4:
 //
 
@@ -354,13 +354,13 @@ int main()
 
                     // Status Validation
                     while(true) {
-                        cout << "Enter new status: ";
+                        cout << "Enter new attendance status (1 for present, 0 for absent): ";
                         cin >> newStatus;
 
                         if(newStatus == "1" || newStatus == "0") {
                             break;
                         } else {
-                             cout << "Invalid status. Please enter 1 or 0\n";
+                             cout << "Invalid status. Please enter 1 for present or 0 for absent\n";
                         }
                     }
 
@@ -549,4 +549,4 @@ int main()
     cout << "Program End." << endl;
 
     return 0;
-}
+}  

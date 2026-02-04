@@ -11,9 +11,9 @@
 // *********************************************************
 // Task Distribution
 // Member_1: Cordinated the project workflow, help on designing and completed the flowchart ,implemented the attendance update module, which includes student ID search, input validation, and automatic file saving
-// Member_2:
+// Member_2: Contributed to the initial draft, flowchart design, and module integration while implementing the file-saving feature and providing sample inputs and outputs to ensure data persistence and successful program execution.
 // Member_3: Implemented the Delete Attendance Row function with user confirmation, ensured records are removed correctly based on StudentID and the updated sheet is displayed, Added logic to allow skipping the delete process when selected by the user.
-// Member_4:
+// Member_4: Row counting functionality, CSV export of updated attendance, final output display
 //
 
 
